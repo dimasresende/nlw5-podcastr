@@ -1,4 +1,5 @@
 import { GetStaticProps } from 'next';
+import { api } from '../services/api';
 
 //Tipagem de cada episódio
 type Episode = {
@@ -24,8 +25,13 @@ export default function Home(props: HomeProps) {
 // Faz o fetch dos episódios do lado do servidor usando a abordagem de SSG para fazer cache do retorno
 // No retorno a chave 'revalidate' é o tempo que ele vai cachear até fazer o request novamente
 export const getStaticProps: GetStaticProps = async () => {
-  const response = await fetch('http://localhost:3333/episodes');
-  const data = await response.json();
+  const { data } = await api.get('episodes', {
+    params: {
+      _limit: 12,
+      _sort: 'published_at',
+      _order: 'desc',
+    }
+  });
 
   return {
     props: {
