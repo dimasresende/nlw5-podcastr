@@ -8,7 +8,21 @@ import styles from './styles.module.scss';
 
 export function Player() {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const { episodeList, currentEpisodeIndex, isPlaying, togglePlay, setPlayingState, playNext, playPrevious, hasNext, hasPrevious, isLooping, toggleLoop } = usePlayer();
+  const {
+    episodeList,
+    currentEpisodeIndex,
+    isPlaying,
+    togglePlay,
+    setPlayingState,
+    playNext,
+    playPrevious,
+    hasNext,
+    hasPrevious,
+    isLooping,
+    toggleLoop,
+    isShuffling,
+    toggleShuffle
+  } = usePlayer();
 
   useEffect(() => {
     if(!audioRef.current) {
@@ -76,7 +90,7 @@ export function Player() {
         )}
 
         <div className={styles.buttons}>
-          <button type="button" disabled={!episode}>
+          <button type="button" disabled={!episode || episodeList.length === 1} onClick={toggleShuffle} className={isShuffling ? styles.isActive : ''}>
             <img src="/shuffle.svg" alt="Embaralhar" />
           </button>
           <button type="button" disabled={!episode || !hasPrevious} onClick={playPrevious}>
